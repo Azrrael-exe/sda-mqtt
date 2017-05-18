@@ -3,7 +3,7 @@ var bcrypt   = require('bcrypt-nodejs');
 
 var deviceSchema = mongoose.Schema({
     name : {type : String, required : true},
-    owner : {type : mongoose.Schema.Types.ObjectId}
+    owner : {type : mongoose.Schema.Types.ObjectId, ref : 'User'}
 });
 
 deviceSchema.statics.findDevice = function(req, res, next) {

@@ -1,6 +1,7 @@
 var passport = require('passport')
 var jwt = require('jsonwebtoken');
 var secret = process.env.TOKEN_SECRET || 'superSecret';
+var User = require('../models/user')
 
 module.exports = {
   verifyToken : function (req, res, next){
@@ -16,8 +17,18 @@ module.exports = {
         else {
           var decoded = jwt.decode(token, secret);
           req.decoded = decoded;
-          req.user = decoded._doc
-          next();
+          User.findOne({email : req.decoded._doc.email}, function(err, user){
+            if(user){
+              req.user = user
+              next();
+            }
+            else {
+              res.status(401)
+              res.json({
+                message : 'no token provided'
+              })
+            }
+          })
         }
       });
     }

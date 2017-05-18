@@ -41,8 +41,16 @@ router.post('/', Device.findDevice, function(req, res){
           res.send(err)
         }
         else{
-          res.status(200)
-          res.send(newDevice)
+          req.user.update({$push : {'devices' : newDevice}}, function(err){
+            if(err){
+              res.status(500)
+              res.send(err)
+            }
+            else {
+              res.status(200)
+              res.send(newDevice)
+            }
+          })
         }
       })
     }
@@ -61,8 +69,17 @@ router.delete('/', Device.findDevice, function(req, res){
         res.send(err)
       }
       else{
-        res.status(200)
-        res.send(req.device)
+        req.user.update({$pull : {'devices' : req.device._id}}, function(err){
+          if(err){
+            res.status(500)
+            res.send(err)
+          }
+          else{
+            res.status(200)
+            res.send(req.device)
+          }
+        })
+
       }
     })
   }

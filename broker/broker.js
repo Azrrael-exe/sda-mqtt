@@ -19,7 +19,7 @@ server.on('clientConnected', function(client) {
     console.log('client connected', client.id);
 });
 server.on('published', function(packet, client) {
-  console.log('Published', packet.payload);
+  console.log('Published', packet.payload.toString());
 });
 server.on('ready', setup);
 
@@ -28,6 +28,7 @@ server.on('ready', setup);
 function setup() {
   console.log('Mosca server is up and running');
   server.authenticate = auth.authenticate;
+  server.authorizePublish = auth.authorizePublish;
 }
 
 
