@@ -1,0 +1,36 @@
+{
+  "name": "sda-mqtt",
+  "version": "1.0.0",
+  "description": "Ejemplo Broker MQTT",
+  "main": "broker.js",
+  "scripts": {
+    "start" : "node ./bin/www",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Azrrael-exe/sda-mqtt.git"
+  },
+  "keywords": [
+    "Broker",
+    "MQTT"
+  ],
+  "author": "Víctor Hugo Camargo",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Azrrael-exe/sda-mqtt/issues"
+  },
+  "homepage": "https://github.com/Azrrael-exe/sda-mqtt#readme",
+  "dependencies": {
+    "mosca": "^2.4.0",
+    "bcrypt-nodejs": "0.0.3",
+    "body-parser": "^1.17.1",
+    "ejs": "~2.5.6",
+    "jsonwebtoken": "^7.4.0",
+    "express": "^4.15.2",
+    "mongoose": "^4.9.6",
+    "morgan": "^1.8.1",
+    "passport": "^0.3.2",
+    "passport-local": "^1.0.0"
+  }
+}
