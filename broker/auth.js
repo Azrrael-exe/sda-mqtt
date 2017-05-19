@@ -7,26 +7,19 @@ module.exports = {
       if(user){
         if(user.validPassword(password.toString())){
           client.user = username;
+          client.type = 'user'
         }
         else {
           for (var i=0; i < user.devices.length; i++){
             if(user.devices[i].name == client.id){
               client.user = client.id
+              client.type = 'device'
               break;
             }
           }
         }
         if(client.user){
-          allowed = [client.user]
-          if(username != client.user){
-            allowed.push(username)
-          }
-          for (var i=0; i < user.devices.length; i++){
-            if(client.user != user.devices[i].name){
-              allowed.push(user.devices[i].name)
-            }
-          }
-          client.allowed = allowed
+          client.username = username.split('@')[0]
           return callback(null, true)
         }
         return callback(null, false)
@@ -37,9 +30,27 @@ module.exports = {
     })
   },
   authorizePublish : function(client, topic, payload, callback) {
-    callback(null, true);
+    if(topic.split('/')[0] === client.username){
+      if(client.type == 'user'){
+          callback(null, true);
+      }
+      else if (client.type == 'device' && topic.split('/')[1] === client.id){
+        callback(null, true);
+      }
+      else {
+        callback(null, false);
+      }
+    }
+    else {
+      callback(null, false);
+    }
   },
   authorizeSubscribe : function(client, topic, callback) {
-    callback(null, true);
+    if(topic.split('/')[0] === client.username){
+      callback(null, true);
+    }
+    else {
+      callback(null, false);
+    }
   }
 }

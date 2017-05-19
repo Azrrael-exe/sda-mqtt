@@ -17,9 +17,7 @@ router.post('/auth', passport.authenticate('local-login', {failureRedirect : '/'
     token : token
   })
 })
-
 router.use('/user', user)
-
 router.use('/device', auth.verifyToken, device)
 
 module.exports = router
