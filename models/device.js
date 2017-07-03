@@ -20,14 +20,14 @@ deviceSchema.statics.findDevice = function(req, res, next) {
   })
 }
 
-deviceSchema.statics.createDevice = function(user, req, next){
-  if(user){
+deviceSchema.statics.createDevice = function(req, next){
+  if(req.user){
     var name = req.body.name
     var description = req.body.description || 'No description provided'
     // Check if the Device had a duplicated name
     var duplicated = false;
-    for(var i=0; i < user.devices.length; i++){
-      if(user.devices[i].name == name){
+    for(var i=0; i < req.user.devices.length; i++){
+      if(req.user.devices[i].name == name){
         duplicated = true;
       }
     }
@@ -41,8 +41,8 @@ deviceSchema.statics.createDevice = function(user, req, next){
       var newDevice = mongoose.model('Device')()
       newDevice['name'] = name
       newDevice['description'] = description
-      newDevice['owner'] = user._id
-      return newDevice
+      newDevice['owner'] = req.user._id
+      return next(null, newDevice)
     }
   }
   else{

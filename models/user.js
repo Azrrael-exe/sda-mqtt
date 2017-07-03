@@ -31,12 +31,12 @@ userSchema.statics.findUser = function(req, res, next) {
   })
 }
 
-userSchema.statics.createUser = function(user, req, next) {
-  if(user){
+userSchema.statics.createUser = function(req, next) {
+  if(req.user){
     var err = new Error('User already exist')
     err.status = 400
     err.message = 'User already exists'
-    next(err)
+    return next(err)
   }
   else {
     var email = req.body.email
@@ -47,14 +47,14 @@ userSchema.statics.createUser = function(user, req, next) {
       var err = new Error('Invalid email adress')
       err.status = 400
       err.message = 'Invalid email adress'
-      next(err)
+      return next(err)
     }
     // Check if the password is long enough
     if(password.length < 6){
       var err = new Error('Password to short')
-      err.statu = 400
+      err.status = 400
       err.message = 'Password to short'
-      next(err)
+      return next(err)
     }
     if(!username){
       username = email.split('@')[0]
@@ -63,7 +63,7 @@ userSchema.statics.createUser = function(user, req, next) {
     newUser['email'] = email
     newUser['password'] = bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
     newUser['username'] = username
-    return newUser;
+    return next(null ,newUser)
   }
 }
 
