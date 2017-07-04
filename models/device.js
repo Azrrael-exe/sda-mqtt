@@ -1,8 +1,10 @@
 var mongoose = require('mongoose');
+var randtoken = require('rand-token');
 var bcrypt   = require('bcrypt-nodejs');
 
 var deviceSchema = mongoose.Schema({
     name : {type : String, required : true},
+    token : {type : String, required : true},
     description : {type : String},
     owner : {type : mongoose.Schema.Types.ObjectId, ref : 'User'}
 });
@@ -40,6 +42,7 @@ deviceSchema.statics.createDevice = function(req, next){
     else {
       var newDevice = mongoose.model('Device')()
       newDevice['name'] = name
+      newDevice['token'] = randtoken.generate(10);
       newDevice['description'] = description
       newDevice['owner'] = req.user._id
       return next(null, newDevice)
