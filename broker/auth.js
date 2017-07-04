@@ -3,26 +3,29 @@ var Device = require('../models/device');
 
 module.exports = {
   authenticate : function(client, username, password, callback) {
-    User.findOne({email : username}).populate({path : 'devices', select : 'name'}).exec(function(err, user) {
+    User.findOne({email : username}).populate({path : 'devices', select : 'name token'}).exec(function(err, user) {
       if(user){
         if(user.validPassword(password.toString())){
           client.user = username;
           client.type = 'user'
+          client.username = username.split('@')[0]
+          return callback(null, true)
         }
         else {
           for (var i=0; i < user.devices.length; i++){
             if(user.devices[i].name == client.id){
-              client.user = client.id
-              client.type = 'device'
-              break;
+              if(user.devices[i].token == password.toString()){
+                client.user = client.id
+                client.type = 'device'
+                client.username = username.split('@')[0]
+                return callback(null, true)
+              }
+              else {
+                return callback(null, false)
+              }
             }
           }
         }
-        if(client.user){
-          client.username = username.split('@')[0]
-          return callback(null, true)
-        }
-        return callback(null, false)
       }
       else {
         return callback(null, false)
@@ -30,6 +33,8 @@ module.exports = {
     })
   },
   authorizePublish : function(client, topic, payload, callback) {
+    console.log(topic)
+    console.log(client.username)
     if(topic.split('/')[0] === client.username){
       if(client.type == 'user'){
           callback(null, true);
@@ -46,7 +51,8 @@ module.exports = {
     }
   },
   authorizeSubscribe : function(client, topic, callback) {
-    if(topic.split('/')[0] === client.username){
+    if(topic.split('/')[0] == client.username){
+      console.log('Here')
       callback(null, true);
     }
     else {

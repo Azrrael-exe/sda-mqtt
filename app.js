@@ -7,6 +7,8 @@ var passport = require('passport');
 
 var index = require('./routes/index');
 
+var response = require('./config/responses')
+
 var mongoose = require('mongoose');
 require('./config/passport')(passport)
 
@@ -27,8 +29,7 @@ app.get("/", function(req, res){
   res.json({message:'Welcome!'})
 })
 
-app.all('*', function(req, res) {
-  res.redirect("/");
-});
+app.use(response.resHandler)
+app.use(response.errHandler)
 
 module.exports = app
