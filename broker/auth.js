@@ -33,8 +33,6 @@ module.exports = {
     })
   },
   authorizePublish : function(client, topic, payload, callback) {
-    console.log(topic)
-    console.log(client.username)
     if(topic.split('/')[0] === client.username){
       if(client.type == 'user'){
           callback(null, true);
@@ -52,7 +50,6 @@ module.exports = {
   },
   authorizeSubscribe : function(client, topic, callback) {
     if(topic.split('/')[0] == client.username){
-      console.log('Here')
       callback(null, true);
     }
     else {
