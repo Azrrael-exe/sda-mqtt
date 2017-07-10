@@ -42,7 +42,7 @@ function setup() {
   console.log('Mosca server is up and running');
   server.authenticate = auth.authenticate;
   server.authorizePublish = auth.authorizePublish;
-  server.authorizeSubscribe = auth.authorizeSubscribe
+  server.authorizeSubscribe = auth.authorizeSubscribe;
 }
 
 
