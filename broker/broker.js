@@ -5,7 +5,7 @@ var auth = require('./auth')
 var ascoltatore = {
   //using ascoltatore
   type: 'mongo',
-  url: 'mongodb://localhost:27017/mqtt',
+  url: process.env.MONGODB_URI || 'mongodb://localhost:27017/mqtt',
   pubsubCollection: 'ascoltatori',
   mongo: {}
 };
