@@ -1,14 +1,13 @@
 var express = require('express');
 var app = express();
+
 var path = require('path');
 var bodyParser = require('body-parser');
 var morgan = require('morgan');
 var passport = require('passport');
 
 var index = require('./routes/index');
-
 var response = require('./config/responses')
-
 var mongoose = require('mongoose');
 require('./config/passport')(passport)
 

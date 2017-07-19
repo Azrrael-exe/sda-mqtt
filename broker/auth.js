@@ -42,6 +42,9 @@ module.exports = {
       else if (client.type == 'device' && topic.split('/')[1] === client.id){
         callback(null, true);
       }
+      else if (client.type == 'device' && topic.split('/')[2] === "input"){
+        callback(null, true);
+      }
       else {
         callback(null, false);
       }
@@ -52,7 +55,6 @@ module.exports = {
   },
   authorizeSubscribe : function(client, topic, callback) {
     if(topic.split('/')[0] == client.username){
-      console.log('Here')
       callback(null, true);
     }
     else {
