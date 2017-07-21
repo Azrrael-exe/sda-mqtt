@@ -17,6 +17,6 @@ router.post('/auth', passport.authenticate('local-login', {failureRedirect : '/'
   })
 })
 
-router.use('/users', users)
+router.use('/users', auth.verifyToken, users)
 
 module.exports = router
