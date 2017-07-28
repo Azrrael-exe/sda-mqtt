@@ -18,8 +18,8 @@ router.post('/auth', passport.authenticate('local-login', {failureRedirect : '/'
 })
 
 router.post('/test', function (req, res) {
-  console.log("Body": req.body);
-  console.log('Headers': req.headers)
+  console.log(req.body);
+  console.log(req.headers)
   res.status(200)
   res.send('Ok')
 })
