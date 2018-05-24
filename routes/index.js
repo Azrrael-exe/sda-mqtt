@@ -9,6 +9,26 @@ var users = require('./users')
 
 var masterkey = process.env.MASTERKEY || 'Maxwell'
 
+router.get('/getUser', function(req, res, next){
+  if(req.user){
+    res.status(200)
+    res.message = "logged user"
+    res.payload = req.user
+    next()
+  }
+  else{
+    next();
+  }
+})
+
+router.get('/', function(req, res, next){
+  if(req.user){
+    res.render('index.ejs', {user : req.user});
+  } else {
+    res.redirect('/login')
+  }
+});
+
 router.post('/signup', User.findUser, function(req, res, next){
   if(req.body.masterkey == masterkey){
     User.createUser(req, function(err, newUser){
@@ -49,6 +69,21 @@ router.post('/auth', passport.authenticate('local-login', {failureRedirect : '/'
   })
 })
 
-router.use('/users', auth.verifyToken, users)
+router.get('/login', function(req, res, next){
+  res.render('login.ejs', { message: req.flash('loginMessage') });
+});
+
+router.post('/login', function(req, res, next){
+  next();
+  },passport.authenticate('local-login', {failureRedirect : '/login'}), function(req, res, next){
+  res.redirect('/');
+});
+
+router.get('/logout', function(req, res, next){
+  req.logout();
+  res.redirect('/');
+});
+
+router.use('/users', auth.isLoggedIn, users)
 
 module.exports = router

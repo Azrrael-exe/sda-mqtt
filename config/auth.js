@@ -4,6 +4,11 @@ var secret = process.env.TOKEN_SECRET || 'superSecret';
 var User = require('../models/user')
 
 module.exports = {
+  isLoggedIn : function (req, res, next) {
+    if (req.isAuthenticated())
+      return next();
+      res.redirect('/');
+    },
   verifyToken : function (req, res, next){
     var token = req.headers['x-access-token'];
     if (token) {
