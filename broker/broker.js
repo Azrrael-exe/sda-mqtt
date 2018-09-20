@@ -3,7 +3,6 @@ var mosca = require('mosca');
 var auth = require('./auth')
 
 var ascoltatore = {
-  //using ascoltatore
   type: 'mongo',
   url: process.env.MONGODB_URI || 'mongodb://localhost:27017/mqtt',
   pubsubCollection: 'ascoltatori',
@@ -44,6 +43,5 @@ function setup() {
   server.authorizePublish = auth.authorizePublish;
   server.authorizeSubscribe = auth.authorizeSubscribe;
 }
-
 
 module.exports = server
